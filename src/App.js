@@ -1,85 +1,105 @@
+import React from "react";
+import { Route, Routes } from 'react-router-dom';
+import axios from "axios";
+import Home from "./pages/Home";
+import Layout from "./components/Layout";
+import Favorites from "./pages/Favorites";
+
+export const AppContext = React.createContext({});
+
 function App() {
+  const [items, setItems] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
+  const [favorite, setFavotite] = React.useState([]);
+  const [searchValue, setSearchValue] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [drawerOpened, setDrawerOpened] = React.useState(false);
+  
+
+  React.useEffect(() => {
+   async function fetchData() {
+
+    const cartResponse = await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/cart');
+    const favoritesResponse = await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites');
+    const itemsResponse = await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/Items');
+
+    setIsLoading(false);
+
+    setItems(itemsResponse.data);
+    setCartItems(cartResponse.data);
+    setFavotite(favoritesResponse.data);
+   }
+
+   fetchData();
+  }, []);
+
+  const onAddToCart = (obj) => {
+     if (cartItems.find(res => res.id === obj.id )) {
+      axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/cart/${obj.id}`)
+      setCartItems(prev => prev.filter(item => item.id !== obj.id))
+     }
+     else {
+      axios.post('https://62f4dbd3535c0c50e763e5af.mockapi.io/cart', obj);
+      setCartItems(prev => [...prev, obj])
+     }
+  }
+
+  const onRemoveItem = (id) => {
+    axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/cart/${id}`);
+    setCartItems((prev) => prev.filter(item => item.id !== id));
+  }
+
+  const onAddToFavorite = async (obj) => {
+   try {
+    if (favorite.find(res => res.id === obj.id )) {
+      axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites/${obj.id}`)
+      setFavotite(prev => prev.filter(item => item.id !== obj.id))
+    }
+    else {
+      const { data } = await axios.post('https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites', obj);
+      setFavotite(prev => [...prev, data])
+    }
+   }
+   catch(error) {
+    alert ('Не удалось добавить в фавориты');
+   }
+  }
+
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value)
+  }
+
+  const isItemAdded = (id) => {
+    return cartItems.some((obj) => obj.id === id)
+  };
+
   return (
-    <div className="wrapper clear">
-      <header className="d-flex justify-between align-center p-40">
-        <div className="d-flex align-center">
-        <img src="/img/logo.png" width={40} height={40}/>
-        <div>
-          <h3 className="text-uppercase">Sneakers Shop</h3>
-          <p className="opacity-5">Магазин лучших кросовок</p>
-        </div>
-        </div>
-        <div>
-        <ul className="d-flex">
-          <li className="mr-30">
-            <img src="/img/cart.svg" width={18} height={18}/>
-            <span>1205 руб.</span>
-          </li>
-          <li>
-            <img src="/img/user.svg" width={18} height={18}/>
-          </li>
-        </ul>
-        </div>
-      </header>
-      <div className="content p-40">
-        <h1 className="mb-40">Все кросcовки</h1>
-        
-        <div className="d-flex">
-        <div className="card">
-          <img width={133} height={112} src="/img/sneakers/1.jpg" alt="" />
-          <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
-          <div className="d-flex justify-between align-center">
-            <div className="d-flex flex-column">
-              <span>Цена:</span>
-              <b>12 999р.</b>
-            </div>
-            <button className="button">
-              <img width={11} height={11} src="" alt="" />
-            </button>
-          </div>
-        </div>
-        <div className="card">
-          <img width={133} height={112} src="/img/sneakers/2.jpg" alt="" />
-          <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
-          <div className="d-flex justify-between align-center">
-            <div className="d-flex flex-column">
-              <span>Цена:</span>
-              <b>12 999р.</b>
-            </div>
-            <button className="button">
-              <img width={11} height={11} src="" alt="" />
-            </button>
-          </div>
-        </div>
-        <div className="card">
-          <img width={133} height={112} src="/img/sneakers/3.jpg" alt="" />
-          <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
-          <div className="d-flex justify-between align-center">
-            <div className="d-flex flex-column">
-              <span>Цена:</span>
-              <b>12 999р.</b>
-            </div>
-            <button className="button">
-              <img width={11} height={11} src="" alt="" />
-            </button>
-          </div>
-        </div>
-        <div className="card">
-          <img width={133} height={112} src="/img/sneakers/4.jpg" alt="" />
-          <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
-          <div className="d-flex justify-between align-center">
-            <div className="d-flex flex-column">
-              <span>Цена:</span>
-              <b>12 999р.</b>
-            </div>
-            <button className="button">
-              <img width={11} height={11} src="" alt="" />
-            </button>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
+    <AppContext.Provider value={{items, cartItems, favorite, isItemAdded, onAddToFavorite, drawerOpened, setDrawerOpened, setCartItems }}>
+      <Routes>
+      <Route path="/" element={
+          <Layout
+            cartItems={cartItems}
+            onRemoveItem={onRemoveItem}
+          />}
+        >
+        <Route index element={
+          <Home
+            cartItems={cartItems}
+            items={items}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            onChangeSearchInput={onChangeSearchInput}
+            onAddToFavorite={onAddToFavorite}
+            onAddToCart={onAddToCart}
+            isLoading = {isLoading}
+          />}
+        />
+        <Route path="/favorites" exact element={
+          <Favorites/>}
+        />
+      </Route>
+    </Routes>
+    </AppContext.Provider>
   );
 }
 
