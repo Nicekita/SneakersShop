@@ -4,6 +4,7 @@ import axios from "axios";
 import Home from "./pages/Home";
 import Layout from "./components/Layout";
 import Favorites from "./pages/Favorites";
+import Orders from "./pages/Orders";
 
 export const AppContext = React.createContext({});
 
@@ -74,7 +75,16 @@ function App() {
   };
 
   return (
-    <AppContext.Provider value={{items, cartItems, favorite, isItemAdded, onAddToFavorite, drawerOpened, setDrawerOpened, setCartItems }}>
+    <AppContext.Provider value={{
+      items,
+      cartItems,
+      favorite,
+      isItemAdded,
+      onAddToFavorite,
+      drawerOpened,
+      setDrawerOpened,
+      setCartItems
+      }}>
       <Routes>
       <Route path="/" element={
           <Layout
@@ -96,6 +106,9 @@ function App() {
         />
         <Route path="/favorites" exact element={
           <Favorites/>}
+        />
+        <Route path="/orders" exact element={
+          <Orders/>}
         />
       </Route>
     </Routes>

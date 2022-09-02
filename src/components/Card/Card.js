@@ -57,7 +57,7 @@ function Card({
                 <div className="d-flex justify-between align-center">
                     <div className="d-flex flex-column">
                         <span>Цена:</span>
-                        <b>{price}</b>
+                        <b>{price} руб.</b>
                     </div>
                     <img
                         className={styles.plus}
