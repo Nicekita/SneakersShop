@@ -38,15 +38,30 @@ function App() {
    fetchData();
   }, []);
 
-  const onAddToCart = (obj) => {
-     if (cartItems.find(res => res.parentId === obj.id )) {
-      axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/cart/${obj.id}`)
-      setCartItems(prev => prev.filter(item => item.parentId !== obj.id))
-     }
-     else {
-      axios.post('https://62f4dbd3535c0c50e763e5af.mockapi.io/cart', obj);
-      setCartItems(prev => [...prev, obj])
-     }
+  const onAddToCart = async (obj) => {
+    try {
+      const findItem = cartItems.find(res => res.parentId === obj.id);
+      if (findItem) {
+        setCartItems(prev => prev.filter(item => item.parentId !== obj.id))
+        await axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/cart/${findItem.id}`)
+        
+      }
+      else {
+        setCartItems(prev => [...prev, obj]);
+        const { data } = await axios.post('https://62f4dbd3535c0c50e763e5af.mockapi.io/cart', obj);
+        setCartItems(prev => prev.map(item => {
+          if (item.parentId === data.parentId) {
+            return {
+              ...item,
+              id: data.id
+            };
+          }
+          return item;
+        }));
+      }
+    } catch (error) {
+      alert ('Не удалось добавить товар в корзину')
+    }
   }
 
   const onRemoveItem = (id) => {
