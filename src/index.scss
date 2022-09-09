@@ -241,6 +241,7 @@ header {
   align-items: center;
   justify-content: center;
   user-select: none;
+  border-radius: 20px;
 }
 
 .item-1{
@@ -249,6 +250,7 @@ header {
 
 .item-2{
 background-color: coral;
+
 }
 
 .item-3{
@@ -257,7 +259,7 @@ background-color: darkseagreen;
 
 .main-container {
   height: 300px;
-  width: 960px;
+  width: 991px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -281,6 +283,47 @@ background-color: darkseagreen;
 .arrow {
   cursor: pointer;
 }
+
+.empty-favorites {
+  width: 290px;
+  margin: 150px auto;
+  text-align: center;
+
+  .title-empty{
+    margin-top: 20px;
+  }
+
+  .description-empty{
+    color: gray;
+    width: 280px;
+    line-height: 24px;
+  }
+
+  .greenButton{
+    width: 245px;
+    margin-top: 20px;
+
+    &:hover {
+      img {
+        transform: rotate(180deg) translateX(3px);
+      }
+    }
+
+    img {
+      position: relative;
+      top: 1px;
+      transform: rotate(180deg);
+      margin-right: 15px;
+      transition: transform 0.15s ease-in-out;
+    }
+  }
+
+  }
+
+
+
+
+
 
 
 

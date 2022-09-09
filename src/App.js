@@ -123,9 +123,9 @@ function App() {
             <>
               <Slider children={
                 <> 
-                <div className="item item-1">1</div>
-                <div className="item item-2">2</div>
-                <div className="item item-3">3</div>
+                <img className="item item-1" alt="Рекламная акция" src="/img/1c.jpg"/>
+                <img className="item item-1" alt="Рекламная акция" src="/img/2c.jpg"/>
+                <img className="item item-1" alt="Рекламная акция" src="/img/3c.jpg"/>
                 </>
                 }
               />

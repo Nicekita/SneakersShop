@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "../components/Card/Card";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 
 function Orders () {
@@ -16,7 +17,10 @@ function Orders () {
 
     return (
         <div className="content p-40">
-            <div className="d-flex align-center justify-between mb-40" >
+            {
+                orders.length > 0 ? (
+                    <>
+                        <div className="d-flex align-center justify-between mb-40" >
                 <h1>Мои покупки</h1>
             </div>
         
@@ -36,6 +40,21 @@ function Orders () {
                         </div>
                     </>
                 )})}
+                    </>
+                ) : (
+                    <div className="empty-favorites">
+                <img src="/img/empty-orders.png" alt="картинка" />
+                <h1 className="title-empty">Заказов нет :(</h1>
+                <p className="description-empty">Вы не сделали ни один заказ</p>
+                <Link to="/">
+                  <button className="greenButton">
+                    <img src="/img/arrow.svg" alt="Arrow" />
+                    Вернуться назад
+                  </button>
+                </Link>
+              </div>
+                )
+            }
         </div>
     )
 }
