@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Layout from "./components/Layout";
 import Favorites from "./pages/Favorites";
 import Orders from "./pages/Orders";
+import Slider from "./components/Slider/Slider";
 
 export const AppContext = React.createContext({});
 
@@ -73,14 +74,12 @@ function App() {
    try {
     const findItem = favorite.find(res => res.title === obj.title);
     if (findItem) {
-      console.log("Проверка то прошла");
       setFavotite(prev => prev.filter(item => item.title !== obj.title))
       axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites/${obj.id}`)
     }
     else {
       const { data } = await axios.post('https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites', obj);
       setFavotite(prev => [...prev, data])
-      console.log("создаю");
     }
    }
    catch(error) {
@@ -114,31 +113,40 @@ function App() {
       setCartItems
       }}>
       <Routes>
-      <Route path="/" element={
-          <Layout
-            cartItems={cartItems}
-            onRemoveItem={onRemoveItem}
-          />}
-        >
-        <Route index element={
-          <Home
-            cartItems={cartItems}
-            items={items}
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            onChangeSearchInput={onChangeSearchInput}
-            onAddToFavorite={onAddToFavorite}
-            onAddToCart={onAddToCart}
-            isLoading = {isLoading}
-          />}
-        />
-        <Route path="/favorites" exact element={
-          <Favorites/>}
-        />
-        <Route path="/orders" exact element={
-          <Orders/>}
-        />
-      </Route>
+        <Route path="/" element={
+            <Layout
+              cartItems={cartItems}
+              onRemoveItem={onRemoveItem}
+            />}
+          >
+          <Route index element={
+            <>
+              <Slider children={
+                <> 
+                <div className="item item-1">1</div>
+                <div className="item item-2">2</div>
+                <div className="item item-3">3</div>
+                </>
+                }
+              />
+              <Home
+                cartItems={cartItems}
+                items={items}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                onChangeSearchInput={onChangeSearchInput}
+                onAddToFavorite={onAddToFavorite}
+                onAddToCart={onAddToCart}
+                isLoading = {isLoading}
+              /></>}
+          />
+          <Route path="/favorites" exact element={
+            <Favorites/>}
+          />
+          <Route path="/orders" exact element={
+            <Orders/>}
+          />
+        </Route>
     </Routes>
     </AppContext.Provider>
   );
