@@ -1,4 +1,5 @@
 import React from "react";
+import { AppContext } from "../App";
 import Card from "../components/Card/Card";
 
 function Home ({ 
@@ -11,9 +12,10 @@ function Home ({
   isLoading
  }) {
 
+  const {fullItems} = React.useContext(AppContext);
 
-  const renderItems = () => {
-    const filtredItems = items.filter((item) =>
+  const renderSearchItems = () => {
+    const filtredItems = fullItems.filter((item) =>
      item.title.toLowerCase().includes(searchValue.toLowerCase())
     );
     return (isLoading ? [...Array(8)] : filtredItems).map((item,index) => (
@@ -28,6 +30,18 @@ function Home ({
 
   }
 
+  const renderItems = () => {
+    return (isLoading ? [...Array(8)] : items).map((item,index) => (
+      <Card
+        key={index}
+        onFavorite = {(obj) => onAddToFavorite(obj) }
+        onPlus = {(obj) => onAddToCart(obj) }
+        loading = {isLoading}
+        {...item}
+      />
+  ));
+  }
+
   return (
     <div className="content p-40">
       <div className="d-flex align-center justify-between mb-40" >
@@ -39,7 +53,7 @@ function Home ({
         </div>
       </div>
       <div className="d-flex flex-wrap">
-        {renderItems()}
+        {searchValue.length > 0 ? renderSearchItems() : renderItems()}
       </div>
     </div>
   );

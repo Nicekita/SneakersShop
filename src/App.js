@@ -6,11 +6,15 @@ import Layout from "./components/Layout";
 import Favorites from "./pages/Favorites";
 import Orders from "./pages/Orders";
 import Slider from "./components/Slider/Slider";
+import Pagination from "./components/Pagination";
+
+
 
 export const AppContext = React.createContext({});
 
 function App() {
   const [items, setItems] = React.useState([]);
+  const [fullItems, setFullItems] = React.useState([]);
   const [cartItems, setCartItems] = React.useState([]);
   const [favorite, setFavotite] = React.useState([]);
   const [searchValue, setSearchValue] = React.useState('');
@@ -21,16 +25,19 @@ function App() {
   React.useEffect(() => {
    async function fetchData() {
     try {
-      const [cartResponse, favoritesResponse, itemsResponse] = await Promise.all([
+      const [cartResponse, favoritesResponse, itemsResponse, fullItemsResponse] = await Promise.all([
         await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/cart'),
         await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites'),
-        await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/Items'),
+        await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/Items?page=1&limit=8'),
+        await axios.get('https://62f4dbd3535c0c50e763e5af.mockapi.io/Items')
       ]); 
+      
       
       setIsLoading(false);
       setItems(itemsResponse.data);
       setCartItems(cartResponse.data);
       setFavotite(favoritesResponse.data);
+      setFullItems(fullItemsResponse.data)
     } catch (error) {
       alert('Ошибка при запросе данных');
     }
@@ -74,10 +81,12 @@ function App() {
    try {
     const findItem = favorite.find(res => res.title === obj.title);
     if (findItem) {
+      console.log('Проверка прошла, удаляю')
       setFavotite(prev => prev.filter(item => item.title !== obj.title))
-      axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites/${obj.id}`)
+      axios.delete(`https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites/${findItem.id}`)
     }
     else {
+      console.log('Проверка не прошла, создаю')
       const { data } = await axios.post('https://62f4dbd3535c0c50e763e5af.mockapi.io/favorites', obj);
       setFavotite(prev => [...prev, data])
     }
@@ -103,6 +112,8 @@ function App() {
   return (
     <AppContext.Provider value={{
       items,
+      setItems,
+      fullItems,
       cartItems,
       favorite,
       isItemAdded,
@@ -120,25 +131,28 @@ function App() {
             />}
           >
           <Route index element={
-            <>
-              <Slider children={
-                <> 
-                <img className="item item-1" alt="Рекламная акция" src="/img/1c.jpg"/>
-                <img className="item item-1" alt="Рекламная акция" src="/img/2c.jpg"/>
-                <img className="item item-1" alt="Рекламная акция" src="/img/3c.jpg"/>
-                </>
-                }
-              />
-              <Home
-                cartItems={cartItems}
-                items={items}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                onChangeSearchInput={onChangeSearchInput}
-                onAddToFavorite={onAddToFavorite}
-                onAddToCart={onAddToCart}
-                isLoading = {isLoading}
-              /></>}
+              <>
+                <Slider infinite children={
+                  <> 
+                  <img className="item item-1" alt="Рекламная акция" src="/img/1c.jpg"/>
+                  <img className="item item-1" alt="Рекламная акция" src="/img/2c.jpg"/>
+                  <img className="item item-1" alt="Рекламная акция" src="/img/3c.jpg"/>
+                  </>
+                  }
+                />
+                <Home
+                  cartItems={cartItems}
+                  items={items}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  onChangeSearchInput={onChangeSearchInput}
+                  onAddToFavorite={onAddToFavorite}
+                  onAddToCart={onAddToCart}
+                  isLoading = {isLoading}
+                />
+                <Pagination/>
+              </>
+            }
           />
           <Route path="/favorites" exact element={
             <Favorites/>}

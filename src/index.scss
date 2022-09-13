@@ -1,3 +1,5 @@
+@import "~bootstrap/scss/bootstrap";
+
 body {
   margin: 0;
   font-family: 'Inter', system-ui; 
@@ -102,7 +104,7 @@ header {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
-
+  
 }
 
 .drawer {
@@ -115,10 +117,13 @@ header {
   padding: 30px;
   flex-direction: column;
   display: flex;
+  
 
+  
   .items {
     overflow: auto;
     margin-bottom: 40px;
+    flex: 1;
   }
 
   h2 {
@@ -232,9 +237,6 @@ header {
   }
 }
 
-.items{
-  flex: 1;
-}
 
 .item{
   display: flex;
@@ -259,7 +261,7 @@ background-color: darkseagreen;
 
 .main-container {
   height: 300px;
-  width: 991px;
+  width: 1030px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -319,6 +321,8 @@ background-color: darkseagreen;
   }
 
   }
+
+
 
 
 

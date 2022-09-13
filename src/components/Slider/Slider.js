@@ -2,15 +2,15 @@ import React, { Children } from "react";
 import { cloneElement } from "react";
 import {FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
-function Slaider ({children})  {
-    const pageWidth = 960;
+function Slaider ({children, infinite})  {
+    const pageWidth = 1000;
     const [pages, setPages] = React.useState([])
     const [offset, setOffset] = React.useState(0)
+    
 
     const handleLeftArrow = () => {
         setOffset((currentOffsent) => {
             const newOffset = currentOffsent + pageWidth;
-            console.log(newOffset)
             return Math.min(newOffset, 0)
         })
     }
@@ -19,7 +19,6 @@ function Slaider ({children})  {
         setOffset((currentOffsent) => {
             const newOffset = currentOffsent - pageWidth;
             const maxOffset = -(pageWidth * (pages.length - 1));
-            console.log(newOffset)
             return Math.max(newOffset, maxOffset)
         })
     }
