@@ -20,9 +20,9 @@ function Pagination () {
     }
 
     return (
-        <div className="d-flex  justify-centalign-centerer mt-5 mb-40">
+        <div className="d-flex align-center justify-center mt-5 mb-40">
             {
-                countPages.map((value) => ( 
+                countPages.map((value) => (
                     <Button key={value} onClick = {((event) => onClickPage(event.target.textContent))} variant="outline-secondary">{value}</Button>
                 ))
             }

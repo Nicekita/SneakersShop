@@ -1,8 +1,10 @@
 import React, { Children } from "react";
+import styles from './Slider.module.scss'
 import { cloneElement } from "react";
-import {FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import {FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-function Slaider ({children, infinite})  {
+
+function Slaider ({children})  {
     const pageWidth = 1000;
     const [pages, setPages] = React.useState([])
     const [offset, setOffset] = React.useState(0)
@@ -39,10 +41,10 @@ function Slaider ({children, infinite})  {
     }, []);
 
     return (
-       <div className="main-container">
+       <div className={styles.mainContainer}>
         <FaChevronLeft className="arrow" onClick={handleLeftArrow}/>
-        <div className="window">
-            <div className="all-pages-container"
+        <div className={styles.window}>
+            <div className={styles.allPagesContainer}
                 style={{
                     transform: `translateX(${offset}px)`
                 }}
