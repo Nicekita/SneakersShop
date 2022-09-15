@@ -251,39 +251,11 @@ header {
 } 
 
 .item-2{
-background-color: coral;
-
+  background-color: coral;
 }
 
 .item-3{
-background-color: darkseagreen;
-}
-
-.main-container {
-  height: 300px;
-  width: 1030px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-}
-
-.window {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
-
-.all-pages-container {
-  height: 100%;
-  display: flex;
-  transition: translate;
-  transition-property: transform;
-  transition-duration: 400ms;
-  transition-timing-function: ease-in-out;
-}
-
-.arrow {
-  cursor: pointer;
+  background-color: darkseagreen;
 }
 
 .empty-favorites {
