@@ -2,12 +2,9 @@
 
 1. download and install node.js https://nodejs.org/en/
 2. downlod and install github on your PC  https://desktop.github.com/
-3. through the terminal, install repository with the command 
-   ### git clone https://github.com/EvGENIY-up/SneakersShop
-4. through the terminal, install dependencies with the command 
-   ### npm i
-5. running apllication with the script
-   ### npm start
+3. through the terminal, install repository with the command `git clone https://github.com/EvGENIY-up/SneakersShop`
+4. through the terminal, install dependencies with the command `npm i`
+5. running apllication with the script `npm start`
 
 ## Available Scripts
 
