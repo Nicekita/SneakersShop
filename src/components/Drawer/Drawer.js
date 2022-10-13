@@ -8,12 +8,14 @@ const delay = () => new Promise((resolve) => setTimeout(resolve, 1000))
 function Drawer({ onCloseCart, onRemove, items = [] }) {
     const {cartItems, setCartItems, totalPrice} = useCart();
     const [isOrderComplete, setIsOrderComplete] = React.useState(false);
+    let isLoading = false;
     const [isLoading, setIsLoading] = React.useState(false);
     const [orderId, setOrderId] = React.useState(null);
     const nalogPrice = Math.ceil(totalPrice / 100 * 5);
 
     const onClickOrder = async () => {
        try {
+           isLoading = true;
         setIsLoading(true)
         const {data} = await axios.post('https://62f4dbd3535c0c50e763e5af.mockapi.io/orders', {items: cartItems});
         setOrderId(data.id);
